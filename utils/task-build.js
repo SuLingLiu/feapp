@@ -119,7 +119,6 @@ module.exports = TaskBuild = {
             }
             //执行命令(gfe o -all)并拷贝文件
             yield execCommand(execParams);
-            return false;
             //获取app的SvnRevision;
             let svnInfo = null;
             if(isPackageAll){
@@ -127,7 +126,11 @@ module.exports = TaskBuild = {
             }else{
                 svnInfo = yield getSvnInfo(`${appSvnPath}/${projectName}`);
             }
-            let revision = svnInfo.entry.$.revision;
+            let revision = svnInfo.entry.$.revision;//提交svn生成的随机号569655
+            /*E:/myBuild/gfe/feapp/[UAT]channel-web/static/image 
+            E:/myBuild/gfe/feapp/[UAT]channel-web/static.tar.gz 
+            E:/myBuild/gfe/feapp/[UAT]channel-web/app/channel-web 
+            E:/myBuild/gfe/feapp/[UAT]channel-web/app.tar.gz*/
             //生成压缩包tar.gz文件
             const originStaticPackPath = getSubDirPath(TEMP_STATIC_PATH);
             const targetStaticPackPath = `${TEMP_STATIC_PATH}.tar.gz`;
@@ -136,6 +139,7 @@ module.exports = TaskBuild = {
 
             yield packDirectory(originStaticPackPath,targetStaticPackPath,TEMP_STATIC_DIR_NAME);
             yield packDirectory(originAppPackPath,targetAppPackPath,TEMP_APP_DIR_NAME);
+
             
             //上传ftp
             //yield uploadFtp(ftp,revision,targetStaticPackPath,targetAppPackPath,app);
@@ -728,9 +732,9 @@ function execCommand(execParams){
 
                             _.mkdir(tempStaticDir); //创建TEMP_STATIC_PATH那层目录
                             _.mkdir(tempAppDir); //创建TEMP_APP_PATH那层目录
-                            
+
                             //拷贝config.json中配置的文件
-                            
+                            //css|js,原目录，拷贝后的目录
                             copyFiles(staticFolder,`${execParams.TASK_DIR_SOURCE_PATH}/${item}/${packageDir}`,tempStaticDir);
                             copyFiles(appFolder,`${execParams.TASK_DIR_SOURCE_PATH}/${item}/${packageDir}`,`${tempAppDir}`,false);
                             copyFiles(appendFiles,`${execParams.TASK_DIR_SOURCE_PATH}/${item}`,`${execParams.TEMP_APP_PATH}/${execParams.app.name}`);
