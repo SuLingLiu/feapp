@@ -1,0 +1,41 @@
+1、各环境启动
+(1)本地dev环境启动，使用local数据库
+    npm run server
+    npm run dev
+    http://localhost:8088/
+(2)本地dev环境启动，使用test数据库
+    npm run server:test
+    npm run dev
+    http://localhost:8088/
+
+(3)本地prd环境启动，使用test数据库
+    npm run server:prd
+    http://localhost:8080/
+
+(4)线上prd环境启动，使用prd数据库，使用sso
+    pm2 start pm2.json
+    http://gui.ds.gome.com.cn:8080
+
+(5)线上prd环境启动，使用prd数据库，不使用sso
+    pm2 start pm2-without-sso.json
+    http://gui.ds.gome.com.cn:8080
+
+(6)线上prd环境启动，使用test数据库
+    pm2 start pm2-test.json
+    http://gui.ds.gome.com.cn:8888
+
+2、pm2-gui
+pm2监控地址：http://gui.ds.gome.com.cn:8088
+密码：AuTh
+
+3、线上生产环境启动步骤
+(1)svn checkout 
+(2)修改utils/config/db-config.js，为test库和prd添加用户名密码(重要)
+(3)npm run build
+(4)pm2 start pm2.json
+
+4、feapp服务器存放目录
+(1)线上生产环境
+    /app/feapp
+(2)线上测试环境
+    /app/feapp-test
